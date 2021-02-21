@@ -2,10 +2,36 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+
 
 /**
+ * Comme toutes les annotations, ApiResource est une fonction à laquelle on peut ajouter des paramètres.
+ * Ici, on active
+ *  - la pagination (pagination_enabled) ;
+ *  - on rend 20 items par page (pagination_items_per_page) ;
+ *  - on affiche d'abord les éléments avec le dernière date (order->sentAt) ;
+ *
+ *
+ * @ApiResource(
+ *  attributes={
+ *     "pagination_enabled"=true,
+ *     "pagination_items_per_page"=20,
+ *     "order"={"sentAt"="desc"}
+ *   }
+ * )
+ *
+ * À l'instar du SearchFilter, on peut préciser les propriétés sur lesquelles on souhaite ouvrir l'ordre.
+ *
+ * @ApiFilter(
+ *   OrderFilter::class,
+ *
+ * )
+ *
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
  */
 class Invoice

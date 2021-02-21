@@ -2,12 +2,38 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CustomerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
+ * L'annotation ApiResource permet de lier une entité à ApiPlatform, de l'exposer comme une ressource à "n'importe qui" à travers une URL
+ *
+ * @ApiResource
+ * Le premier paramètre de ApiFilter est le type de filtre que l'on souhaite utiliser (ici la classe SearchFilter qui
+ * nous est livrée avec ApiPlatform), le second paramètre (qui est optionnel) sont les propriétés que l'on souhaite filtrer.
+ *
+ * ApiFilter va permettre à une requête de filtrer les propriétés. Il est possible de passer une stratégie de recherche
+ * (exacte, partiel, début, fin et commençant par un mot spécifique) qui permet de définir l'algorithme de recherche à
+ * l'image d'une regex.
+ * (cf. https://api-platform.com/docs/core/filters/#search-filter)
+ *
+ * @ApiFilter(
+ *   SearchFilter::class, properties={"firstname"="partial", "lastname", "company"}
+ * )
+ *
+ * Il est possible de cumuler les filtres, en les faisant suivre les uns à la suite des autres.
+ * Il est également possible de filtrer sur des propriétés liées par des relations en faisant suivre la propriété par un
+ * point, à l'instar d'un objet Javascript. (cf. https://api-platform.com/docs/core/filters/#filtering-on-nested-properties)
+ *
+ * @ApiFilter(
+ *   OrderFilter::class,
+ * )
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
  */
 class Customer

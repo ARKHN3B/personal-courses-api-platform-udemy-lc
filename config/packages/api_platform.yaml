@@ -1,0 +1,18 @@
+# Cette configuration est une configuration par défaut. Elle peut être surchargée au cas par cas.
+api_platform:
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']
+    patch_formats:
+        json: ['application/merge-patch+json']
+    swagger:
+        versions: [3]
+    collection:
+        # Les attributs de pagination peuvent être gérés à trois niveau :
+        #   - global : i.e. dans ce fichier de configuration qui impactera toutes nos collections
+        #   - ressource : i.e. dans une entité grâce à l'annotation @ApiResource
+        #   - requête : e.g. http://localhost:8000/api/invoices?pagination=12&itemsPerPage=2 (rendu possible grâce au
+        #               paramètre client_enabled)
+        pagination:
+            enabled: false
+            items_per_page: 5
+            client_enabled: true
