@@ -7,11 +7,15 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ApiResource
+ * @UniqueEntity("email", message="L'adresse e-mail existe déjà")
  */
 class User implements UserInterface
 {
@@ -24,6 +28,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="L'email doit être renseigné")
+     * @Assert\Email(message="L'email doit être valide")
      */
     private $email;
 
@@ -35,16 +41,21 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Le mot de passe doit être renseigné")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le prénom doit être renseigné")
+     * @Assert\Length(min=3, max=255, minMessage="Le prénom doit faire minimum 3 caractères", maxMessage="Le prénom doit faire maximum 255 caractères")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le nom doit être renseigné")
+     * @Assert\Length(min=3, max=255, minMessage="Le nom doit faire minimum 3 caractères", maxMessage="Le nom doit faire maximum 255 caractères")
      */
     private $lastname;
 
