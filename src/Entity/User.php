@@ -10,11 +10,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *   normalizationContext={
+ *     "groups"={"users_read"}
+ *   }
+ * )
  * @UniqueEntity("email", message="L'adresse e-mail existe déjà")
  */
 class User implements UserInterface
@@ -30,6 +35,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(message="L'email doit être renseigné")
      * @Assert\Email(message="L'email doit être valide")
+     * @Groups({"users_read"})
      */
     private $email;
 
@@ -49,6 +55,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le prénom doit être renseigné")
      * @Assert\Length(min=3, max=255, minMessage="Le prénom doit faire minimum 3 caractères", maxMessage="Le prénom doit faire maximum 255 caractères")
+     * @Groups({"users_read"})
      */
     private $firstname;
 
@@ -56,6 +63,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom doit être renseigné")
      * @Assert\Length(min=3, max=255, minMessage="Le nom doit faire minimum 3 caractères", maxMessage="Le nom doit faire maximum 255 caractères")
+     * @Groups({"users_read"})
      */
     private $lastname;
 
